@@ -1,0 +1,15 @@
+# Use 'git ls-files -i --exclude-standard' to check if
+# tracked files are ignored by changes here.
+#
+# general files
+.*
+*~
+*.bak
+*.log
+
+# toplevel directories
+/build*
+
+# dot-files which should NOT be ignored
+!.gitignore
+
