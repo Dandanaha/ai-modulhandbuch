@@ -3,14 +3,16 @@
 <!-- Definition of reusable styles -->
   <!-- Header of a module page -->
   <xsl:attribute-set name="module-header">
-    <xsl:attribute name="font-size">18pt</xsl:attribute>
-    <xsl:attribute name="font-family">sans-serif</xsl:attribute>
+    <xsl:attribute name="font-size">14pt</xsl:attribute>
+    <xsl:attribute name="font-family">Liberation Sans</xsl:attribute>
+    <xsl:attribute name="font-weight">bold</xsl:attribute>
     <xsl:attribute name="line-height">24pt</xsl:attribute>
     <xsl:attribute name="space-after.optimum">15pt</xsl:attribute>
     <xsl:attribute name="background-color">#8BA8E1</xsl:attribute>
     <xsl:attribute name="color">black</xsl:attribute>
     <xsl:attribute name="text-align">left</xsl:attribute>
-    <xsl:attribute name="padding-top">3pt</xsl:attribute>
+    <xsl:attribute name="padding-top">5pt</xsl:attribute>
+    <xsl:attribute name="padding-bottom">5pt</xsl:attribute>
     <xsl:attribute name="padding-left">2pt</xsl:attribute>
     <xsl:attribute name="border-color">black</xsl:attribute>
     <xsl:attribute name="border-width">0.5pt</xsl:attribute>
@@ -19,24 +21,20 @@
 
   <!-- Table cell of a module page -->
   <xsl:attribute-set name="module-table-cell-reg">
+    <xsl:attribute name="font-size">11pt</xsl:attribute>
     <xsl:attribute name="border-color">black</xsl:attribute>
     <xsl:attribute name="border-width">0.5pt</xsl:attribute>
     <xsl:attribute name="border-style">solid</xsl:attribute>
-    <xsl:attribute name="border-bottom">none</xsl:attribute>
     <xsl:attribute name="padding-left">2pt</xsl:attribute>
     <xsl:attribute name="padding-right">2pt</xsl:attribute>
     <xsl:attribute name="padding-top">1pt</xsl:attribute>
     <xsl:attribute name="padding-bottom">1pt</xsl:attribute>
+    <xsl:attribute name="border-top">none</xsl:attribute>
   </xsl:attribute-set>
+
   <!-- First table cell of a module page - the only one that needs an upper border-->
-  <xsl:attribute-set name="module-table-cell-first">
-    <xsl:attribute name="border-color">black</xsl:attribute>
-    <xsl:attribute name="border-width">0.5pt</xsl:attribute>
-    <xsl:attribute name="border-style">solid</xsl:attribute>
-    <xsl:attribute name="padding-left">2pt</xsl:attribute>
-    <xsl:attribute name="padding-right">2pt</xsl:attribute>
-    <xsl:attribute name="padding-top">1pt</xsl:attribute>
-    <xsl:attribute name="padding-bottom">1pt</xsl:attribute>
+  <xsl:attribute-set name="module-table-cell-first" use-attribute-sets="module-table-cell-reg">
+     <xsl:attribute name="border-top">0.5pt</xsl:attribute>
   </xsl:attribute-set>
 
   <xsl:template match="/">
@@ -53,10 +51,10 @@
         <fo:simple-page-master master-name="manual-intro"
                       page-height="29.7cm"
                       page-width="21cm"
-                      margin-top="1cm"
-                      margin-bottom="2cm"
+                      margin-top="1.27cm"
+                      margin-bottom="1.27cm"
                       margin-left="2.5cm"
-                      margin-right="2.5cm">
+                      margin-right="1.3cm">
           <fo:region-body margin-top="3cm"/>
           <fo:region-before extent="3cm"/>
           <fo:region-after extent="1.5cm"/>
@@ -64,13 +62,13 @@
         <fo:simple-page-master master-name="module-page"
                       page-height="29.7cm"
                       page-width="21cm"
-                      margin-top="1cm"
-                      margin-bottom="2cm"
-                      margin-left="2cm"
-                      margin-right="2cm">
+                      margin-top="1.27cm"
+                      margin-bottom="1.27cm"
+                      margin-left="2.5cm"
+                      margin-right="1.3cm">
           <fo:region-body margin-top="1cm"/>
           <fo:region-before extent="1cm"/>
-          <fo:region-after extent="1.5cm"/>
+          <fo:region-after extent="0cm"/>
         </fo:simple-page-master>
       </fo:layout-master-set>
       <!-- end: defines page layout -->
@@ -140,13 +138,33 @@
     <xsl:apply-templates/>
   </fo:root>
   </xsl:template>
-  <xsl:template match="modules/part/sub/module">
-    <fo:page-sequence master-reference="module-page">
+  <xsl:template match="modules">
+    <fo:page-sequence master-reference="module-page" id="module-pages">
+      <!-- Header -->
+      <fo:static-content flow-name="xsl-region-before" font-size="11pt" font-family="Arial">
+        <fo:block text-align-last="justify">
+          Modulhandbuch Angewandte Informatik B.Sc.
+          <fo:leader leader-pattern="space" />
+          Hochschule Worms, Fachbereich Informatik
+        </fo:block>
+      </fo:static-content>
+
+      <!-- Footer -->
+      <fo:static-content flow-name="xsl-region-after" font-size="8pt" font-family="Arial">
+       <fo:block text-align-last="justify">
+        Fassung vom <xsl:value-of select="../info/changed"/>
+        <fo:leader leader-pattern="space" />
+        Seite <fo:page-number/> / <fo:page-number-citation-last ref-id="module-pages"/>
+       </fo:block>
+     </fo:static-content>
+
+     <!-- Actual module page -->
       <fo:flow flow-name="xsl-region-body">
+        <xsl:for-each select="part/sub/module">
         <fo:block xsl:use-attribute-sets="module-header">
           Modul <xsl:value-of select="name/code"/>: <xsl:value-of select="name/title"/>
         </fo:block>
-        <fo:table border-collapse="separate" table-layout="fixed" width="100%">
+        <fo:table break-after="page" border-collapse="separate" table-layout="fixed" width="100%">
           <fo:table-column column-width="33.33%"/>
           <fo:table-column column-width="66.66%"/>
 
@@ -352,9 +370,18 @@
                 </fo:block>
               </fo:table-cell>
               <fo:table-cell xsl:use-attribute-sets="module-table-cell-reg">
-                <fo:block>
+                <fo:list-block>
                   <xsl:value-of select="description/target"/>
-                </fo:block>
+                  <xsl:choose>
+                    <xsl:when test="boolean(description/target)">
+                        <xsl:call-template name="tokenizeString">
+                            <xsl:with-param name="list" select="description/target"/>
+                            <xsl:with-param name="delimiter" select="'=NL'"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:otherwise/> 
+                  </xsl:choose>
+                </fo:list-block>
               </fo:table-cell>
             </fo:table-row>
             <fo:table-row>
@@ -419,10 +446,63 @@
             </fo:table-row>
           </fo:table-body>
         </fo:table>
-
+</xsl:for-each>
       </fo:flow> <!-- closes the flow element-->
+      
     </fo:page-sequence> <!-- closes the page-sequence -->
     <xsl:apply-templates/>
   </xsl:template>
 
+  <!--############################################################-->
+  <!--## Template to tokenize strings                           ##-->
+  <!--############################################################-->
+  <xsl:template name="tokenizeString">
+  <!--passed template parameter -->
+      <xsl:param name="list"/>
+      <xsl:param name="delimiter"/>
+      <xsl:choose>
+          <xsl:when test="contains($list, $delimiter)"> 
+              <fo:list-item>
+                <fo:list-item-label end-indent="label-end()">
+                  <fo:block>
+                  <fo:inline>&#x2022;</fo:inline>
+                  </fo:block>
+                  </fo:list-item-label>
+                  <!-- list text -->
+                  <fo:list-item-body start-indent="body-start()">
+                  <fo:block>               
+                      <xsl:value-of select="substring-before($list,$delimiter)"/>
+                  </fo:block>
+                </fo:list-item-body>
+              </fo:list-item>
+              <xsl:call-template name="tokenizeString">
+                  <!-- store anything left in another variable -->
+                  <xsl:with-param name="list" select="substring-after($list,$delimiter)"/>
+                  <xsl:with-param name="delimiter" select="$delimiter"/>
+              </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+              <xsl:choose>
+                  <xsl:when test="$list = ''">
+                      <xsl:text/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <fo:list-item>
+                      <fo:list-item-label end-indent="label-end()">
+                        <fo:block>
+                        <fo:inline>&#x2022;</fo:inline>
+                        </fo:block>
+                        </fo:list-item-label>
+                        <!-- list text -->
+                        <fo:list-item-body start-indent="body-start()">
+                        <fo:block>                 
+                              <xsl:value-of select="$list"/>
+                        </fo:block>
+                      </fo:list-item-body>
+                    </fo:list-item>
+                  </xsl:otherwise>
+              </xsl:choose>
+          </xsl:otherwise>
+      </xsl:choose>
+  </xsl:template> 
 </xsl:stylesheet>
