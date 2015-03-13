@@ -22,6 +22,7 @@
   <!-- Table cell of a module page -->
   <xsl:attribute-set name="module-table-cell-reg">
     <xsl:attribute name="font-size">11pt</xsl:attribute>
+    <xsl:attribute name="font-family">Arial</xsl:attribute>
     <xsl:attribute name="border-color">black</xsl:attribute>
     <xsl:attribute name="border-width">0.5pt</xsl:attribute>
     <xsl:attribute name="border-style">solid</xsl:attribute>
@@ -102,14 +103,14 @@
 
           <!-- this defines a title -->
           <fo:block font-size="18pt"
-                font-family="sans-serif"
+                font-family="Arial"
                 line-height="24pt"
                 space-after.optimum="15pt"
                 background-color="blue"
                 color="white"
                 text-align="center"
                 padding-top="3pt">
-            Modulhandbuch der Hochschule Worms
+            &#x25E6;Modulhandbuch der Hochschule Worms
           </fo:block>
 
 
@@ -161,13 +162,17 @@
      <!-- Actual module page -->
       <fo:flow flow-name="xsl-region-body">
         <xsl:for-each select="part/sub/module">
-        <fo:block xsl:use-attribute-sets="module-header">
-          Modul <xsl:value-of select="name/code"/>: <xsl:value-of select="name/title"/>
-        </fo:block>
+        
         <fo:table break-after="page" border-collapse="separate" table-layout="fixed" width="100%">
           <fo:table-column column-width="33.33%"/>
           <fo:table-column column-width="66.66%"/>
-
+          <fo:table-header>
+            <fo:table-row>
+              <fo:table-cell number-columns-spanned="2">
+                <fo:block xsl:use-attribute-sets="module-header">Modul <xsl:value-of select="name/code"/>: <xsl:value-of select="name/title"/></fo:block>
+              </fo:table-cell>
+            </fo:table-row>
+          </fo:table-header>
           <fo:table-body>
             <fo:table-row>
               <fo:table-cell xsl:use-attribute-sets="module-table-cell-first">
@@ -371,7 +376,6 @@
               </fo:table-cell>
               <fo:table-cell xsl:use-attribute-sets="module-table-cell-reg">
                 <fo:list-block>
-                  <xsl:value-of select="description/target"/>
                   <xsl:choose>
                     <xsl:when test="boolean(description/target)">
                         <xsl:call-template name="tokenizeString">
@@ -379,7 +383,7 @@
                             <xsl:with-param name="delimiter" select="'=NL'"/>
                         </xsl:call-template>
                     </xsl:when>
-                    <xsl:otherwise/> 
+                    <xsl:otherwise> - </xsl:otherwise> 
                   </xsl:choose>
                 </fo:list-block>
               </fo:table-cell>
@@ -391,9 +395,24 @@
                 </fo:block>
               </fo:table-cell>
               <fo:table-cell xsl:use-attribute-sets="module-table-cell-reg">
-                <fo:block>
-                  <xsl:value-of select="description/content"/>
-                </fo:block>
+                <fo:list-block>
+                  <xsl:choose>
+                    <xsl:when test="boolean(description/content)">
+                        <xsl:call-template name="tokenizeString">
+                            <xsl:with-param name="list" select="description/content"/>
+                            <xsl:with-param name="delimiter" select="'=NL'"/>
+                        </xsl:call-template>
+                      <!-- <xsl:value-of select="$contentList"/> -->
+                      <!-- <xsl:for-each select="$contentList/list-item">
+                        <xsl:call-template name="tokenizeString">
+                            <xsl:with-param name="list" select="."/>
+                            <xsl:with-param name="delimiter" select="'=NL'"/>
+                        </xsl:call-template>
+                      </xsl:for-each> -->
+                    </xsl:when>
+                    <xsl:otherwise/> 
+                  </xsl:choose>
+                </fo:list-block>
               </fo:table-cell>
             </fo:table-row>
             <fo:table-row>
@@ -453,6 +472,26 @@
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template name="string-replace-all">
+    <xsl:param name="text" />
+    <xsl:param name="replace" />
+    <xsl:param name="by" />
+    <xsl:choose>
+      <xsl:when test="contains($text, $replace)">
+        <xsl:value-of select="substring-before($text,$replace)" />
+        <xsl:value-of select="$by" />
+        <xsl:call-template name="string-replace-all">
+          <xsl:with-param name="text" select="substring-after($text,$replace)" />
+          <xsl:with-param name="replace" select="$replace" />
+          <xsl:with-param name="by" select="$by" />
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$text" />
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <!--############################################################-->
   <!--## Template to tokenize strings                           ##-->
   <!--############################################################-->
@@ -470,8 +509,15 @@
                   </fo:list-item-label>
                   <!-- list text -->
                   <fo:list-item-body start-indent="body-start()">
-                  <fo:block>               
-                      <xsl:value-of select="substring-before($list,$delimiter)"/>
+                    <xsl:variable name="subItems">
+                      <xsl:call-template name="string-replace-all">
+                        <xsl:with-param name="text" select="substring-before($list,$delimiter)" />
+                        <xsl:with-param name="replace" select="'=SL'" />
+                        <xsl:with-param name="by" select="'&#xA;&#x25E6;&#x9;'" />
+                      </xsl:call-template>
+                    </xsl:variable>
+                  <fo:block linefeed-treatment="preserve" white-space-collapse="false" white-space-treatment="preserve">               
+                      <xsl:value-of select="$subItems"/>
                   </fo:block>
                 </fo:list-item-body>
               </fo:list-item>
@@ -495,8 +541,15 @@
                         </fo:list-item-label>
                         <!-- list text -->
                         <fo:list-item-body start-indent="body-start()">
+                          <xsl:variable name="subItems">
+                            <xsl:call-template name="string-replace-all">
+                              <xsl:with-param name="text" select="$list" />
+                              <xsl:with-param name="replace" select="'=SL'" />
+                              <xsl:with-param name="by" select="'&#xA;&#x25E6;&#x9;'" />
+                            </xsl:call-template>
+                          </xsl:variable>
                         <fo:block>                 
-                              <xsl:value-of select="$list"/>
+                              <xsl:value-of select="$subItems"/>
                         </fo:block>
                       </fo:list-item-body>
                     </fo:list-item>
@@ -504,5 +557,5 @@
               </xsl:choose>
           </xsl:otherwise>
       </xsl:choose>
-  </xsl:template> 
+  </xsl:template>
 </xsl:stylesheet>
