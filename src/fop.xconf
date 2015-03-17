@@ -36,6 +36,9 @@ the location of this file.
           <font-triplet name="Arial" style="normal" weight="normal"/>
           <font-triplet name="ArialMT" style="normal" weight="normal"/>
         </font>
+        <font kerning="yes" embed-url="file:///C:/Users/Steffen/Documents/fop/fop-1.1/src/LiberationSans-Bold.ttf">
+          <font-triplet name="Liberation Sans" style="normal" weight="normal"/>
+        </font>
         
       </fonts>
 
