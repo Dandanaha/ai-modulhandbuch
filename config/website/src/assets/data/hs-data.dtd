@@ -1,0 +1,23 @@
+<!ELEMENT xml ANY>
+<!ELEMENT info (created, changed, revision, owner)>
+<!ELEMENT modules (part+)>
+<!ELEMENT part (sub+)>
+<!ELEMENT sub (module+)>
+<!ELEMENT module (name, type, qsp, sem, requirements, pts, extype+, description, professor, offered-semesters)>
+<!ELEMENT name (abbr, title, code)>
+<!ELEMENT description (target, content)>
+
+<!ELEMENT type (#CDATA)>
+<!ELEMENT qsp (#CDATA)>
+<!ELEMENT sem (#CDATA)>
+<!ELEMENT requirements (#CDATA)>
+<!ELEMENT pts (#CDATA)>
+<!ELEMENT extype (#CDATA)>
+<!ELEMENT professor (#CDATA)>
+<!ELEMENT offered-semesters (#CDATA)>
+
+<!ELEMENT abbr (#CDATA)>
+<!ELEMENT title (#CDATA)>
+<!ELEMENT code (#CDATA)>
+<!ELEMENT target (#CDATA)>
+<!ELEMENT content (#CDATA>

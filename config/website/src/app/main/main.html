@@ -1,0 +1,36 @@
+<div layout="vertical" layout-fill>
+
+  <header ng-include="'components/navbar/navbar.html'"></header>
+
+  <md-content>
+    <section class="jumbotron">
+      <h1>Modulmanager</h1>
+      <p class="lead">
+        <img class="app-logo-lg" src="assets/images/app-icon-512px.png" alt="I'm Yeoman"><br>
+        Angewandte Informatik right at your fingertips!
+      </p>
+      <p><md-button class="md-raised" href="#" aria-label="Google Play Store link">Get it in the play store!</md-button class="md-raised"></p>
+    </section>
+
+    <div class="techs" layout-align="center">
+      <h2>Here's what you can do!</h2>
+      <md-card ng-repeat="navOpt in navOpts | orderBy:'rank'">
+        <div class="thumbnail">
+          <img flex-sm="50" class="pull-right" ng-src="assets/images/{{navOpt.logo}}" alt="{{navOpt.title}}">
+          <div class="caption">
+            <h3>{{navOpt.title}}</h3>
+            <p>{{navOpt.description}}</p>
+            <p><a ng-href="{{navOpt.url}}">{{navOpt.url}}</a></p>
+          </div>
+        </div>
+      </md-card>
+    </div>
+  </md-content>
+
+  <footer>
+    <md-toolbar layout="row" layout-align="center center">
+      <p>Brought to you by TEAM STUDY SUCCESS</a></p>
+    </md-toolbar>
+  </footer>
+
+</div>

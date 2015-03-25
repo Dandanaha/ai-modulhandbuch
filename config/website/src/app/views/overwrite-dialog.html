@@ -1,0 +1,20 @@
+<md-dialog>
+  <h2>Der eingegebene Modulcode wird bereits verwendet!</h2>
+  <p>
+    Sie möchten für das Modul <span class="highlight">{{prototype.name.title}}</span> den Code <span class="highlight">{{prototype.name.code}}</span> festlegen. Dieser Code wird momentan allerdings vom Modul <span class="highlight">{{conflict.name.title}}</span> belegt. Sie können den Konflikt auf folgende Arten auflösen:
+    <ol>
+      <li><span class="highlight">Einfügen (Noch nicht implementiert):</span> Das neue Modul wird <span class="highlight">vor dem alten Modul</span> in die Liste eingefügt und alle nachfolgenden Module in dieser Gruppe rücken ein Feld nach hinten</li>
+      <li><span class="highlight">Anfügen:</span> Ihr festgelegter Code wird verworfen und das neue Modul stattdessen <span class="highlight">an den Schluss dieser Kategorie angefügt.</span> Der Code des neuen Moduls wäre dann <span class="highlight">{{prototype.appendCode}}</span>. Falls das Modul bereits besteht, wird es versetzt</li>
+      <li><span class="highlight">Verwerfen:</span> Das geänderte bzw. erzeugte Modul wird nicht in den Datensatz aufgenommen</li>
+      <li><span class="highlight">Zurück:</span> Sie kehren zurück zur Modulbearbeitung und können den Code selbstständig neu setzen</li>
+    </ol>
+  </p>
+
+  <h3>Wie möchten Sie fortfahren?</h3> 
+  <div layout="row">
+    <md-button flex class="md-raised" ng-disabled="true" aria-label="insert module" ng-click="answer('insert')">Einfügen</md-button> 
+    <md-button flex class="md-raised" aria-label="append module" ng-click="answer('append')">Anfügen</md-button> 
+    <md-button flex class="md-raised" aria-label="discard all changes" ng-click="answer('discard')">Verwerfen</md-button> 
+    <md-button flex class="md-raised" aria-label="back to edit mode" ng-click="answer('back')">Zurück</md-button> 
+  </div>
+</md-dialog>

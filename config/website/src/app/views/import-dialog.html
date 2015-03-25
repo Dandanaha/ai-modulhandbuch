@@ -1,0 +1,12 @@
+<md-dialog>
+  <h2>Modulinformationen laden</h2>
+  <h3 ng-click="answer($event)">aus lokaler .xml Datei</h3> 
+  <p layout="row" layout-align="center center">
+    <input flex id="localXml" type="file">
+    <md-button flex aria-label="insert module" class="md-raised" ng-click="answer('local')">Importieren</md-button>
+  </p>
+  <h3>ODER</h3>
+  <p>
+    <md-button flex class="md-raised" aria-label="insert module" ng-click="answer('import')">Aktuelle Version vom Server laden</md-button> 
+  </p>
+</md-dialog>

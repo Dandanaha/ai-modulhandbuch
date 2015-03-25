@@ -1,0 +1,7 @@
+<md-dialog>
+  <h2>Wo soll das neue Modul hin?</h2>
+  <select ng-model="selectedCat" ng-options="cat.sub.name group by cat.part.name for cat in catList">
+    <option value="">-- Kategorie auswählen --</option>
+  </select>
+  <span class="align-right"><md-button class="btn-round visible btn-40px" aria-label="discardChanges" ng-click="discardChanges()" title="Cancel"><img src="assets/icons/icon-fail.png" ></img></md-button><md-button class="btn-round visible btn-40px" aria-label="add new module" ng-click="addModule()" title="Append Module to Category"><img src="assets/icons/icon-pass.png" ></img></md-button></span>
+</md-dialog>

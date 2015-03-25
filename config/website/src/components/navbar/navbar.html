@@ -1,0 +1,15 @@
+<md-toolbar layout="row" layout-align="center center" ng-controller="NavbarCtrl">
+  <div class="app-logo" flex="10">
+   <a href="/"><img layout-fill layout-padding src="assets/images/app-icon-128px.png"></a>
+  </div>
+  <section flex layout-padding layout="row" layout-align="left center">
+    <md-button href="/" class="md-raised" aria-label="nav-home">Home</md-button>
+    <md-button href="modules" class="md-raised" aria-label="nav-modules">Modules</md-button>
+    <md-button href="modules" class="md-raised" aria-label="nav-modules">View Semester</md-button>
+    <md-button href="#" class="md-raised" aria-label="nav-about">About</md-button>
+    <md-button href="admin" class="md-raised" aria-label="nav-admin">Admin</md-button>
+  </section>
+
+  <md-button aria-label="change-semester">{{semester}}</md-button>
+
+</md-toolbar>

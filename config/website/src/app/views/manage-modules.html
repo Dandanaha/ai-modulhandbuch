@@ -1,0 +1,324 @@
+<div layout="vertical" layout-fill md-theme="default">
+
+  <md-toolbar layout="row" layout-align="center center" ng-controller="NavbarCtrl">
+    <div class="app-logo" flex="10">
+     <a href="/"><img layout-fill layout-padding src="assets/images/app-icon-128px.png"></a>
+    </div>
+    <section flex layout-padding layout="row" layout-align="left center">
+      <md-button class="md-raised" ng-disabled="false" aria-label="Import xml" title="Get module list from xml" ng-click="showImportDialog()">Importieren</md-button>
+      <md-button aria-label="add new module" class="md-raised" ng-click="showNewModuleDialog()" ng-disabled="modules.length<1">Modul hinzufügen</md-button>
+      <md-button class="md-raised" ng-click="exportXml()" aria-label="Create xml" title="Save module list as xml" ng-disabled="modules.length<1">Exportieren</md-button>
+    </section>
+    <md-button aria-label="change-semester">{{semester}}</md-button>
+</md-toolbar>
+
+  <md-content>
+    <section class="jumbotron">
+      <h1>Module verwalten</h1>
+        <div layout="row" layout-align="center center" ng-show="modules.part">
+        <span class="highlight">Verwalten:</span>
+        <md-button aria-label="Switch to structure tab" ng-click="ui.activeTab=1" ng-class="{isActive:ui.activeTab==1}" class="tab-chooser">Struktur</md-button>
+        <md-button aria-label="Switch to module tab" ng-click="ui.activeTab=2" ng-class="{isActive:ui.activeTab==2}" class="tab-chooser">Module</md-button>
+        <md-input-container flex>
+          <label>Filter</label>
+          <input ng-model="ui.filterObj.name.code" ng-if="ui.filterName=='code'" ng-change="checkStrict()">
+          <input ng-model="ui.filterObj.name.abbr" ng-if="ui.filterName=='abbr'">
+          <input ng-model="ui.filterObj.name.title" ng-if="ui.filterName=='title'">
+          <input ng-model="ui.filterObj.professor" ng-if="ui.filterName=='prof'">
+          <select ng-model="ui.filterName" ng-options="filter as name for (filter,name) in ui.filterOpts" ng-change="eraseFilters()"></select>
+          <!-- <p>{{ui.filterName}} {{ui.filterObj.name.code.length}} {{ui.filterName == 'code' && ui.filterObj.name.code.length > 0}} {{ui.strict}}</p> -->
+        </md-input-container>
+      </div>
+    </section>
+
+    <div class="module-collection-container" ng-repeat="part in modules.part track by $index" ng-show="ui.activeTab==1">
+      <h2>{{part._code}}: {{part._name}}</h2>
+      <p class="description-input"><textarea ng-model="part.description" rows="3" placeholder="Kein Text"> </textarea></p>
+      <div ng-repeat="sub in part.sub track by $index">
+        <h3 ng-if="sub._code && sub._code != 2 && sub._code < 4">{{sub._code}}: {{sub._name}}</h3>
+        <p class="description-input"><textarea ng-model="sub.description" rows="3" placeholder="Kein Text" ng-if="sub._code && sub._code != 2 && sub._code < 4"> </textarea></p>
+      </div>
+    </div>
+    <div class="module-collection-container" ng-repeat="part in modules.part track by $index" ng-show="ui.activeTab==2">
+      <h2>{{part._code}}: {{part._name}}</h2>
+      <div ng-repeat="sub in part.sub track by $index">
+        <h3 ng-if="sub._code">{{sub._code}}: {{sub._name}}</h3>
+        <div class="techs" layout-align="center">
+          <md-card class="module-card" ng-repeat="module in sub.module | filter:ui.filterObj:ui.strict">
+            <div ng-if="module.name.code!=ui.editModule.code1 && module.name.code!=ui.editModule.code2 && module.name.code!=ui.editModule.code3">
+              <span class="edit-btn-container align-right"><md-button class="btn-round btn-40px" aria-label="setEditMode" ng-click="setEditMode($parent.$parent.$parent.$index,$parent.$parent.$index,$parent.$index,module.name.code)" title="Edit this module"><img src="assets/icons/pen64x64.png" ></img></md-button>
+              <md-button class="btn-round btn-40px" aria-label="removeModule" ng-click="removeModule($parent.$parent.$parent.$index,$parent.$parent.$index,$parent.$index)"><img src="assets/icons/icon-trash.png" title="Delete this module"></img></md-button></span>
+              <h2>{{module.name.title}}</h2>
+              <span><md-subheader ng-bind="module.name.abbr"></md-subheader></span>
+              <div>
+                <label>Code: </label><span ng-bind="module.name.code"></span>
+              </div>
+              <div>
+                <label>Vorgesehenes Semester: </label><span ng-bind="module.sem"></span>
+              </div>
+              <div>
+                <label>Typ: </label><span ng-bind="moduleTypes[module.type]"></span>
+              </div>
+              <div ng-if="module.type=='major'">
+                <label>Verwendbar für Schwerpunkt: </label>
+                <ul>
+                  <li ng-repeat="qsp in module.qsp track by $index">
+                    {{qsp.__text}}
+                  </li>
+                </ul>
+              </div>         
+              <div>
+                <label>Zugangsvoraussetzungen: </label>
+                <ul>
+                  <li ng-repeat="req in module.requirements track by $index">
+                    {{req}}
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <label>Anrechnung in anderen Studiengängen: </label>
+                <ul>
+                  <li ng-repeat="major in module['other-majors'] track by $index">
+                    {{major}}
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <label>Modulverantwortliche Person: </label><span ng-bind="module.responsible || module.professor"></span>
+              </div>
+              <div>
+                <label>Lehrende Person: </label><span ng-bind="module.professor"></span>
+              </div>
+              <div>
+                <label>Lehrsprache: </label><span ng-bind="module.lang || 'Deutsch'"></span>
+              </div>
+              <div>
+                <label>ECTS Punkte: </label><span ng-bind="module.pts"></span>
+              </div>  
+              <div>
+                <label>Workload: </label>
+                <ul>
+                  <li ng-repeat="work in module.workload track by $index">{{work}}</li>
+                </ul>
+              </div>
+              <div>
+                <label>SWS: </label><span ng-bind="module.sws"></span>
+              </div>    
+              <div>
+                <label>Prüfungsarten: </label>
+                <ul>
+                  <li ng-repeat="ex in module.extype track by $index">{{exTypes[ex]}}</li>
+                </ul>
+              </div>
+              <div>
+                <label>Gewichtung in der Gesamtnote: </label><span ng-bind="module.weight || 'Entsprechend der ECTS-Punkte'"></span>
+              </div>
+              <div ng-if="(module.type=='elective')||(module.type=='major')">
+                <label>Angebot: </label>
+                <ul>
+                  <li ng-repeat="semester in module['offered-semesters'] track by $index">{{offer[semester].name}}</li>
+                </ul>
+              </div>
+              <div>
+                <label>Lernziele: </label>
+                <ul>
+                  <li ng-repeat="target in module.description.target track by $index">
+                    {{target}}
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <label>Inhalte: </label>
+                <ul>
+                  <li ng-repeat="desc in module.description.content track by $index">
+                    {{desc}}
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <label>Besonderes: </label><span ng-bind="module.special || '-'"></span>
+              </div>
+              <div>
+                <label>Pflichtlektüre: </label>
+                <ul>
+                  <li ng-repeat="script in module.scripts track by $index">
+                    {{script}}
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <label>Zusatzliteratur: </label>
+                <ul>
+                  <li ng-repeat="book in module.literature track by $index">
+                    {{book}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div ng-if="module.name.code==ui.editModule.code1 || module.name.code==ui.editModule.code2 || module.name.code==ui.editModule.code3">
+              <span class="align-right"><md-button class="btn-round visible btn-40px" aria-label="commitChanges" ng-click="commitChanges()"><img src="assets/icons/icon-pass.png" ></img></md-button><md-button class="btn-round visible btn-40px" aria-label="discardChanges" ng-click="discardChanges()"><img src="assets/icons/icon-fail.png" ></img></md-button></span>
+              <span class="input-module-title"><input name="module-title" type="text" ng-model="prototype.name.title" ></span>
+              <span class="input-module-abbr"><input name="module-abbr" maxlength="6" type="text" ng-model="prototype.name.abbr"></span>
+              <div>
+                <label>Code: </label>
+                <span class="input-module-code"><input name="module-abbr" maxlength="6" type="text" ng-model="prototype.name.code" class="align-right"></span>
+              </div>
+              <div>
+                <label>Vorgesehenes Semester: </label>
+                <span class="input-module-pts"><input name="module-sem" type="text" ng-model="prototype.sem" class="align-right"></span>
+              </div>
+              <div>
+                <label>Typ: </label>
+                <select ng-model="prototype.type" placeholder="Typ" ng-options="type as name for (type,name) in moduleTypes" class="pull-right">
+                </select>
+              </div>
+              <div ng-if="module.type=='major'">
+                <label>Verwendbar für Schwerpunkt: </label>
+                <ul>
+                  <li ng-repeat="qsp in prototype.qsp track by $index" class="single-line-input">
+                    <input type="text" ng-model="prototype.qsp[$index].__text">
+                    <md-button class="btn-inline md-raised" aria-label="remove requirement" class="btn-round visible btn-40px" ng-click="removeQsp($index)">
+                      x
+                    </md-button>
+                  </li>
+                  <li><input type="text" ng-model="prototype.newQsp" ng-keydown="checkSeparator($event,'qsp')" class="full-width" typeahead="state for state in states | filter:$viewValue | limitTo:8"></li>
+                </ul>
+              </div>    
+              <div>
+                <label>Zugangsvoraussetzungen: </label>
+                <ul>
+                  <li ng-repeat="req in prototype.requirements track by $index" class="single-line-input">
+                    <input type="text" ng-model="prototype.requirements[$index]">
+                    <md-button class="btn-inline md-raised" aria-label="remove requirement" class="btn-round visible btn-40px" ng-click="removeReq($index)">
+                      x
+                    </md-button>
+                  </li>
+                  <li><input type="text" ng-model="prototype.newReq" ng-keydown="checkSeparator($event,'req')" class="full-width"></li>
+                </ul>
+              </div>
+              <div>
+                <label>Anrechnung in anderen Studiengängen: </label>
+                <ul>
+                  <li ng-repeat="major in prototype['other-majors'] track by $index" class="single-line-input">
+                    <input type="text" ng-model="prototype['other-majors'][$index]">
+                    <md-button class="btn-inline md-raised" aria-label="remove major" class="btn-round visible btn-40px" ng-click="removeMajor($index)">
+                      x
+                    </md-button>
+                  </li>
+                  <li><input type="text" ng-model="prototype.newMajor" ng-keydown="checkSeparator($event,'major')" class="full-width"></li>
+                </ul>
+              </div>
+              <div>
+                <label title="Entspricht der Lehrenden Person, wenn nichts anderes angegeben wird.">Modulverantwortliche Person: </label>
+                <span class="input-module-pts" ><input name="module-sem" type="text" ng-model="prototype.responsible" class="align-right" placeholder="{{prototype.professor}}"></span>
+              </div>
+              <div>
+                <label>Lehrende Person: </label>
+                <span class="input-module-pts"><input name="module-sem" type="text" ng-model="prototype.professor" class="align-right"></span>
+              </div>
+              <div>
+                <label>Lehrsprache: </label>
+                <span class="input-module-pts"><input name="module-pts" type="text" ng-model="prototype.lang" class="align-right" placeholder="Deutsch"></span>
+              </div>
+              <div>
+                <label>ECTS Punkte: </label>
+                <span class="input-module-pts"><input name="module-pts" maxlength="2" type="text" ng-model="prototype.pts" class="align-right"></span>
+              </div>
+              <div>
+                <label>Workload: </label>
+                <ul>
+                  <li ng-repeat="work in prototype.workload track by $index" class="single-line-input">
+                    <input type="text" ng-model="prototype.workload[$index]">
+                    <md-button class="btn-inline md-raised" aria-label="remove work" class="btn-round visible btn-40px" ng-click="removeWork($index)">
+                      x
+                    </md-button>
+                  </li>
+                  <li><textarea rows="3" ng-model="prototype.newWork" ng-keydown="checkSeparator($event,'work')"></textarea></li>
+                </ul>
+              </div>
+              <div>
+                <label>SWS: </label>
+                <span class="input-module-pts"><input name="module-pts" type="text" ng-model="prototype.sws" class="align-right"></span>
+              </div>
+              <div>
+                <label>Prüfungsarten: </label>
+                <p ng-repeat="(key,value) in exTypes track by $index">
+                  <md-checkbox ng-model="prototype.exTypes[key]" aria-label="check-{{key}}">{{value}}</md-checkbox>
+                </p>
+              </div>
+              <div>
+                <label>Gewichtung in der Gesamtnote: </label>
+                <span class="input-module-pts"><input name="module-pts" type="text" ng-model="prototype.weight" class="align-right" placeholder="Entsprechend der ECTS-Punkte"></span>
+              </div>
+              <div ng-if="module.type=='elective'||module.type=='major'">
+                <label>Angebot: </label>
+                <p ng-repeat="(key,value) in offer track by $index">
+                  <md-checkbox ng-model="prototype.offeredSem[key]" aria-label="check-{{key}}">{{value.name}}</md-checkbox>
+                </p>
+              </div>
+              <div>
+                <label>Lernziele: </label>
+                <ul>
+                  <li ng-repeat="target in prototype.description.target track by $index" class="single-line-input">
+                    <input type="text" ng-model="prototype.description.target[$index]">
+                    <md-button class="btn-inline md-raised" aria-label="remove target" class="btn-round visible btn-40px" ng-click="removeTarget($index)">
+                      x
+                    </md-button>
+                  </li>
+                  <li><textarea rows="3" ng-model="prototype.newTarget" ng-keydown="checkSeparator($event,'target')"></textarea></li>
+                </ul>
+              </div>
+              <div>
+                <label>Inhalte: </label>
+                <ul>
+                  <li ng-repeat="content in prototype.description.content track by $index" class="single-line-input">
+                    <input type="text" ng-model="prototype.description.content[$index]">
+                    <md-button class="btn-inline md-raised" aria-label="remove target" class="btn-round visible btn-40px" ng-click="removeContent($index)">
+                      x
+                    </md-button>
+                  </li>
+                  <li><textarea rows="3" ng-model="prototype.newContent" ng-keydown="checkSeparator($event,'content')"></textarea></li>
+                </ul>
+              </div>
+              <div>
+                <label>Besonderes: </label>
+                <span class="input-module-pts"><input name="module-pts" type="text" ng-model="prototype.special" class="align-right" placeholder="-"></span>
+              </div>
+              <div>
+                <label>Pflichtlektüre: </label>
+                <ul>
+                  <li ng-repeat="script in prototype.scripts track by $index" class="single-line-input">
+                    <input type="text" ng-model="prototype.scripts[$index]">
+                    <md-button class="btn-inline md-raised" aria-label="remove script" class="btn-round visible btn-40px" ng-click="removeScript($index)">
+                      x
+                    </md-button>
+                  </li>
+                  <li><textarea rows="3" ng-model="prototype.newScript" ng-keydown="checkSeparator($event,'script')"></textarea></li>
+                </ul>
+              </div>
+              <div>
+                <label>Zusatzliteratur: </label>
+                <ul>
+                  <li ng-repeat="book in prototype.literature track by $index" class="single-line-input">
+                    <input type="text" ng-model="prototype.literature[$index]">
+                    <md-button class="btn-inline md-raised" aria-label="remove book" class="btn-round visible btn-40px" ng-click="removeBook($index)">
+                      x
+                    </md-button>
+                  </li>
+                  <li><textarea rows="3" ng-model="prototype.newBook" ng-keydown="checkSeparator($event,'book')"></textarea></li>
+                </ul>
+              </div>
+            </div>
+          </md-card>
+        </div>
+      </div>
+    </div>
+  </md-content>
+
+  <footer>
+    <md-toolbar layout="row" layout-align="center center">
+      <p>Brought to you by TEAM STUDY SUCCESS</a></p>
+    </md-toolbar>
+  </footer>
+
+</div>

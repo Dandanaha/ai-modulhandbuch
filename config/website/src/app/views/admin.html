@@ -1,0 +1,30 @@
+<div layout="vertical" layout-fill>
+
+  <header ng-include="'components/navbar/navbar.html'"></header>
+
+  <md-content>
+    <section class="jumbotron">
+      <h1>Admin section</h1>
+    </section>
+
+    <div class="techs" layout-align="center">
+      <md-card ng-repeat="adminCard in adminCards | orderBy:'rank'">
+        <div class="thumbnail">
+          <img class="pull-right" ng-src="assets/{{adminCard.logo}}" alt="{{adminCard.title}}">
+          <div class="caption">
+            <h3>{{adminCard.title}}</h3>
+            <p>{{adminCard.description}}</p>
+            <p><a ng-href="{{adminCard.url}}">{{adminCard.url}}</a></p>
+          </div>
+        </div>
+      </md-card>
+    </div>
+  </md-content>
+
+  <footer>
+    <md-toolbar layout="row" layout-align="center center">
+      <p>With ♥ from <a href="https://twitter.com/Swiip">@Swiip</a></p>
+    </md-toolbar>
+  </footer>
+
+</div>
