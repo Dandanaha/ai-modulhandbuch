@@ -2,6 +2,7 @@ angular.module "modulmanager", ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize
   .config ($routeProvider,$locationProvider,$sceDelegateProvider) ->
     $sceDelegateProvider.resourceUrlWhitelist([
      'self'
+     'http://ai.it.hs-worms.de/**'
     ])
     $locationProvider.html5Mode(true).hashPrefix '!'
     $routeProvider

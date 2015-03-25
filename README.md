@@ -6,6 +6,8 @@ Worms zu generieren.
 
 Das Modulhandbuch wird im Format PDF und XML bereitgestellt.
 
+
+
 ## Arbeitsablauf zur Modifizierung des Modulhandbuchs
 
 In diesem Repository ist eine Webseite enthalten, mit der die Rohdaten des Modulhandbuchs bearbeitet werden können, ohne XML Kenntnisse zu besitzen.
@@ -18,6 +20,8 @@ Der generelle Arbeitsablauf ist wie folgt:
 4. Exportieren der aktualisierten Rohdaten auf eigene Maschine
 5. Einchecken in Repository (src/hs-data.xml überschreiben)
 
+
+
 ## Bedienung des Editors (Website)
 ### Öffnen der Rohdaten
 Nachdem die Website aufgerufen wurde, ist die einzige verfügbare Funktion "IMPORTIEREN". Alle anderen Optionen sind entweder versteckt oder ausgegraut. Mit einem Klick auf den IMPORTIEREN Button öffnet sich ein modaler Dialog. Hier hat der Nutzer nun die Wahl, seine eigene XML mit Moduldaten zu öffnen, oder die aktuellste Version vom Server zu laden. In beiden Fällen führt der erfolgreiche Importvorgang zur Schließung des Dialogs und zur Anzeige der geladenen Module.
@@ -27,14 +31,16 @@ Die Verwaltung der Daten geschieht in zwei Tabs, der Strukturtab und der Modulta
 
 Die Filterfunktion wird dafür verwendet, bestimmte Module innerhalb der Liste besser zu finden und kann nach verschiedenen Parametern filtern. Der aktive Parameter wird mit dem Auswahl-Dropdown direkt rechts neben dem Eingabefeld festgelegt.
 
-In der Kopfzeile sind schließlich die beiden bisher ausgegrauten Buttons aktiv geworden. Durch Klick auf "MODUL HINZUFÜGEN" öffnet sich ein modaler Dialog, in dem die Untergruppe festgelegt wird, zu der das neue Modul gehören soll. Das neue Modul wird an die letzte Stelle der gewählten Kategorie gesetzt und sein Code automatisch auf die nächste freie Stelle gesetzt. (z.B. 1.1.4)
+In der Kopfzeile sind schließlich die beiden bisher ausgegrauten Buttons aktivierbar. Durch Klick auf "MODUL HINZUFÜGEN" öffnet sich ein modaler Dialog, in dem die Untergruppe festgelegt wird, zu der das neue Modul gehören soll. Das neue Modul wird an die letzte Stelle der gewählten Kategorie gesetzt und sein Code automatisch auf die nächste freie Stelle gesetzt. (z.B. 1.1.4)
 
-Mit "MODUL EXPORTIEREN" wird der Download der neuen Rohdaten in XML Form ausgelöst. Das Verhalten bei Dateidownloads ist in den Einstellungen des verwendeten Browsers festgelegt.
+Mit "EXPORTIEREN" wird der Download der neuen Rohdaten in XML Form ausgelöst. Das Verhalten bei Dateidownloads ist in den Einstellungen des verwendeten Browsers festgelegt.
+
 
 ### Bearbeiten der Struktur
 Wenn der Strukturtab gewählt ist, erscheinen alle Kategorien mit ihrer Nummer und die Module sind ausgeblendet. Unter jeder Kategorie befindet sich ein Textfeld, in dem die passende Beschreibung eingegeben werden kann. Derzeit gibt es außer des im Browser eingebauten 'Strg+Z' keine Möglichkeit, die Änderungen rückgängig zu machen. 
 
-Die Änderungen in den Textfeldern werden ohne explizite Bestätigung für den neuen Datensatz übernommen und werden beim Export berücksichtigt
+Die Änderungen in den Textfeldern werden ohne explizite Bestätigung für den neuen Datensatz übernommen und werden beim Export berücksichtigt.
+
 
 ### Bearbeiten eines Moduls
 Ist der Modultab ausgewählt, so werden alle Module und Kategorien, die im geöffneten Datensatz vorkommen, angezeigt. Um ein Modul zu bearbeiten, muss mit einem Klick auf das Bleistift Symbol des Moduls der Bearbeitungsmodus aktiviert werden. Danach sind alle Felder des Moduls editierbar.
@@ -46,11 +52,17 @@ Textfelder werden wie gewohnt bearbeitet.
 Listenelemente, erkennbar am vorausgehenden schwarzen Punkt, werden hinzugefügt, indem der neue Eintrag in das leere Feld am Ende der Liste geschrieben wird. Mit der Enter Taste wird das neue Element an die Liste angefügt und das Eingabefeld wird geleert.
 Mit einem Klick auf das X wird das entsprechende Listenelement gelöscht.
 Die bestehenden Listenelemente können wie die Reintext Elemente nach Belieben editiert werden.
+Mit Listenelementen zweiter Ebene wird genauso verfahren.
 
-Nachdem alle Änderungen vorgenommen wurden, hat der Nutzer zwei Optionen, die über die Buttons in der oberen rechten Ecke des Moduls ausgelöst werden. Beide beenden den Bearbeitungsmodus
+__Der Inhalt des leeren Feldes wird beim verlassen des Berbeitungsmodus verworfen, die Elemente müssen also unbedingt mit Enter der entsprechenden Liste hinzugefügt werden.__
+
+
+Nachdem alle Änderungen vorgenommen wurden, hat der Nutzer zwei Optionen, die über die Buttons in der oberen rechten Ecke des Moduls ausgelöst werden. Beide beenden den Bearbeitungsmodus.
 
 Der GRÜNE HAKEN übernimmt alle Änderungen und aktualisiert den Inhalt des Moduls.
+
 Das ROTE KREUZ verwirft alle Änderungen und versetzt das Modul in seinen Urzustand.
+
 
 
 ## Technisches
@@ -65,7 +77,7 @@ Um die Website zu verwenden, kann sie entweder über die verwendete Buildumgebun
 #### Bauen des Quellcodes
 Die Website ist mithilfe zahlreicher Buildtools realisiert, die sich mit bower (http://http://bower.io/) und dem Node Package Manager (https://www.npmjs.com/) installieren lassen. Für letzteres wird Node.js (https://nodejs.org/) benötigt.
 
-Nachdem Node.js auf der Maschine installiert ist, die den Buildprozess ausführen soll, sind müssen u.U. zunächst bower und dann die bereits festgelegten Abhängigkeiten installiert werden.
+Nachdem Node.js auf der Maschine installiert ist, die den Buildprozess ausführen soll, müssen u.U. zunächst bower und dann die bereits festgelegten Abhängigkeiten installiert werden.
 
 Installiere Bower
 
@@ -86,7 +98,8 @@ Auslösen des Bauvorgangs
     gulp clean
     gulp build
 
-Starten des Servers (Öffnet nach erfolgreichem Bau ein Browserfenster mit der Website)
+Starten des lokalen Servers (Öffnet nach erfolgreichem Bau ein Browserfenster mit der Website)
+
     gulp serve
 
 

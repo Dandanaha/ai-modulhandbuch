@@ -189,14 +189,20 @@ angular.module "modulmanager"
     $scope.removeContent = (index) ->
       moduleConstructor.removeContent($scope.prototype,index)
 
+    $scope.removeSubContent = (parentIndex, index) ->
+      moduleConstructor.removeSubContent($scope.prototype,parentIndex, index)
+
+    $scope.removeSubTarget = (parentIndex, index) ->
+      moduleConstructor.removeSubTarget($scope.prototype,parentIndex, index)
+
     $scope.removeScript = (index) ->
       moduleConstructor.removeScript($scope.prototype,index)
 
     $scope.removeBook = (index) ->
       moduleConstructor.removeBook($scope.prototype,index)
 
-    $scope.checkSeparator = (e,type) ->
-      moduleConstructor.checkSeparator($scope.prototype,e,type)
+    $scope.checkSeparator = (e,type,index) ->
+      moduleConstructor.checkSeparator($scope.prototype,e,type,index)
 
     $scope.modules = [
     ]

@@ -251,6 +251,11 @@ section.jumbotron {
     text-align: center;
   }
 
+  .sub-item {
+    width: calc(100% - 30px);
+    margin-top: 7px;
+  }
+
   md-card {
     width: 30%;
 

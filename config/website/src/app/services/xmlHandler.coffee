@@ -11,11 +11,29 @@ angular.module('modulmanager')
       module.scripts = module.scripts?.split('=NL') if not Array.isArray(module.scripts)
       module.literature = module.literature?.split('=NL') if not Array.isArray(module.literature)
       module.requirements = module.requirements?.split(',') if not Array.isArray(module.requirements)
-      module.description.target = module.description.target.split('=NL') if not Array.isArray(module.description.target)
-      module.description.content = module.description.content.split('=NL') if not Array.isArray(module.description.content)
       module['offered-semesters'] = module['offered-semesters'].split(',') if not Array.isArray(module['offered-semesters'])
-      
-      # Step 2 - Initialize empty fields
+
+      # Step 2 - Parse multi-level lists
+      targets = module.description.target.split('=NL') if not Array.isArray(module.description.target)
+      module.description.target = []
+      for target in targets
+        target = target.split('=SL')
+        module.description.target.push {
+          text:target[0] || ''
+          subs:target.slice 1
+        }
+
+      contents = module.description.content.split('=NL') if not Array.isArray(module.description.content)
+      module.description.content = []
+      for content in contents
+        content = content.split('=SL')
+        module.description.content.push {
+          text:content[0] || ''
+          subs:content.slice 1
+        }
+
+
+      # Step 3 - Initialize empty fields
       module['offered-semesters'] = [] if not module['offered-semesters']?[0].length == 0
       module.extype = [] if module.extype?[0].length == 0
       module['other-majors'] = [] if module['other-majors']?[0].length == 0
@@ -39,8 +57,20 @@ angular.module('modulmanager')
       console.log modules
       return modules
 
+    # The multilevel lists need to be merged into a single string
+    listToString = (list) ->
+      if not list then return ''
+      result = []
+      for elem in list
+        subs = elem.subs.join '=SL'
+        elem = elem.text
+        if subs.length > 0 then elem+='=SL'+subs
+        result.push elem
+      return result.join '=NL'
+
     getModuleXml: () ->
       result = $q.defer()
+      # url = 'http://ai.it.hs-worms.de/mm/mm.xml'
       url = 'assets/data/hs-data.xml'
       $http.get url
       .success (resp) ->
@@ -107,8 +137,8 @@ angular.module('modulmanager')
                   extype: module.extype
                   weight: module.weight || 'Entsprechend der ECTS-Punkte'
                   description:
-                    target: module.description.target?.join '=NL'
-                    content: module.description.content?.join '=NL'
+                    target: listToString(module.description.target)
+                    content: listToString(module.description.content)
                   methods: module.methods || ''
                   special: module.special || ''
                   scripts: module.scripts?.join '=NL' || []
@@ -116,7 +146,6 @@ angular.module('modulmanager')
                 } for module in sub.module)
               } for sub in part.sub)
             }for part in modules.part)
-
       }
 
       # Create xml file

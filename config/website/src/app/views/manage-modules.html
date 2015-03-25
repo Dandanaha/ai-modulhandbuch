@@ -123,7 +123,12 @@
                 <label>Lernziele: </label>
                 <ul>
                   <li ng-repeat="target in module.description.target track by $index">
-                    {{target}}
+                    {{target.text}}
+                    <ul ng-if="target.subs.length > 0">
+                      <li ng-repeat ="sub in target.subs track by $index">
+                        {{sub}}
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </div>
@@ -131,7 +136,12 @@
                 <label>Inhalte: </label>
                 <ul>
                   <li ng-repeat="desc in module.description.content track by $index">
-                    {{desc}}
+                    {{desc.text}}
+                    <ul ng-if="desc.subs.length > 0">
+                      <li ng-repeat ="sub in desc.subs track by $index">
+                        {{sub}}
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </div>
@@ -260,24 +270,42 @@
                 <label>Lernziele: </label>
                 <ul>
                   <li ng-repeat="target in prototype.description.target track by $index" class="single-line-input">
-                    <input type="text" ng-model="prototype.description.target[$index]">
+                    <input type="text" ng-model="prototype.description.target[$index].text">
                     <md-button class="btn-inline md-raised" aria-label="remove target" class="btn-round visible btn-40px" ng-click="removeTarget($index)">
                       x
                     </md-button>
+                    <ul>
+                      <li ng-repeat="sub in target.subs">
+                        <input type="text" ng-model="prototype.description.target[$parent.$index].subs[$index]" class="sub-item">
+                        <md-button class="btn-inline md-raised" aria-label="remove subtarget" class="btn-round visible btn-40px" ng-click="removeSubTarget($parent.$index,$index)">
+                          x
+                        </md-button>
+                      </li>
+                      <li class="sub-item"><textarea rows="1" ng-model="prototype.newTarget.newSub[$index]" ng-keydown="checkSeparator($event,'subTarget',$index)"></textarea></li>
+                    </ul>
                   </li>
-                  <li><textarea rows="3" ng-model="prototype.newTarget" ng-keydown="checkSeparator($event,'target')"></textarea></li>
+                  <li><textarea rows="3" ng-model="prototype.newTarget.text" ng-keydown="checkSeparator($event,'target')"></textarea></li>
                 </ul>
               </div>
               <div>
                 <label>Inhalte: </label>
                 <ul>
                   <li ng-repeat="content in prototype.description.content track by $index" class="single-line-input">
-                    <input type="text" ng-model="prototype.description.content[$index]">
-                    <md-button class="btn-inline md-raised" aria-label="remove target" class="btn-round visible btn-40px" ng-click="removeContent($index)">
+                    <input type="text" ng-model="prototype.description.content[$index].text">
+                    <md-button class="btn-inline md-raised" aria-label="remove content" class="btn-round visible btn-40px" ng-click="removeContent($index)">
                       x
                     </md-button>
+                    <ul>
+                      <li ng-repeat="sub in content.subs">
+                        <input type="text" ng-model="prototype.description.content[$parent.$index].subs[$index]" class="sub-item">
+                        <md-button class="btn-inline md-raised" aria-label="remove subcontent" class="btn-round visible btn-40px" ng-click="removeSubContent($parent.$index,$index)">
+                          x
+                        </md-button>
+                      </li>
+                      <li class="sub-item"><textarea rows="1" ng-model="prototype.newContent.newSub[$index]" ng-keydown="checkSeparator($event,'subContent',$index)"></textarea></li>
+                    </ul>
                   </li>
-                  <li><textarea rows="3" ng-model="prototype.newContent" ng-keydown="checkSeparator($event,'content')"></textarea></li>
+                  <li><textarea rows="3" ng-model="prototype.newContent.text" ng-keydown="checkSeparator($event,'content')"></textarea></li>
                 </ul>
               </div>
               <div>

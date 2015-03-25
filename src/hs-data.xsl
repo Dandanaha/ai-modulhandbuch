@@ -330,6 +330,24 @@
           <fo:block font-family="Arial">
             Die einzelnen Module sind in den folgenden Grafiken dargestellt.
           </fo:block>
+
+          <!-- Page 2 -->
+          <fo:block text-align="center" page-break-before="always">
+            <fo:external-graphic src="url(img/modules-detailed.png)" content-width="185mm">
+            </fo:external-graphic>
+          </fo:block>
+
+          <fo:block font-family="Arial">
+            Die Module bestehen in der Regel aus einer Vorlesung und einem Praktikum. Für die Praktika stehen modern ausgestattete Labore zur Verfügung, die u.a. mit modernen Servern und PCs (Betriebssysteme Windows, Linux) sowie Apple iMacs (Betriebssystem OS X) ausgestattet sind.
+          </fo:block>
+
+          <!-- Page 3 -->
+          <fo:block font-family="Arial" page-break-before="always">
+            Im Bereich der Qualifikations-Schwerpunkte müssen die Studierenden 6 Module (30 CP) aus den (derzeit 9-10) Modulen des jeweiligen Bereichs auswählen. Am Ende des Studiums müssen die Studierenden nachweisen, dass sie mindestens 6 Module eines bestimmten Qualifikationsschwerpunktes erfolgreich absolviert haben; dieser Qualifikationsschwerpunkt wird dann im Zeugnis genannt.
+          </fo:block>
+          <fo:block font-family="Arial">
+            Das Angebot der wählbaren Module pro Schwerpunkt kann sich in Abhängigkeit von Nachfrage und vorhandenen Ressourcen ändern, solange dadurch die Möglichkeit des Abschlusses eines angestrebten Schwerpunkts für die Studierenden bestehen bleibt.
+          </fo:block>          
           <!-- End of Preamble -->
 
         <!-- Actual module pages -->
@@ -341,9 +359,13 @@
                     color="#355E90"
                     font-family="Liberation Sans"
                     margin-bottom="15pt"
-                    id="{generate-id()}">
+                    id="{generate-id()}"
+                    page-break-before="always">
             <xsl:value-of select="./@code"/>
             <fo:inline padding-left="10pt"><xsl:value-of select="./@name"/></fo:inline>
+          </fo:block>
+          <fo:block>
+            <xsl:value-of select="description"/>
           </fo:block>
           <xsl:for-each select="./sub">
             <xsl:if test="./@code != 2 and ./@code &lt; 4">
@@ -357,6 +379,9 @@
                       id="{generate-id()}">
                 <xsl:value-of select="./@code"/>
                 <fo:inline padding-left="10pt"><xsl:value-of select="./@name"/></fo:inline>
+              </fo:block>
+              <fo:block>
+                <xsl:value-of select="description"/>
               </fo:block>
             </xsl:if>
             <xsl:for-each select="./module">            
@@ -476,7 +501,7 @@
                     </fo:table-cell>
                     <fo:table-cell xsl:use-attribute-sets="module-table-cell-reg">
                       <fo:block>
-                        Ich hab immer noch keine Ahnung, was das heißen soll
+                        -
                       </fo:block>
                     </fo:table-cell>
                   </fo:table-row>

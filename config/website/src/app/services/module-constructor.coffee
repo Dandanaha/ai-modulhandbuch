@@ -31,20 +31,52 @@ angular.module('modulmanager')
         prototype.newWork = ''
 
     addTarget = (prototype) ->
-      if prototype.newTarget?.length >=1
+      if prototype.newTarget?.text.length >=1
         if prototype.description.target
-          prototype.description.target.push(prototype.newTarget)
+          prototype.description.target.push {
+            text:prototype.newTarget.text
+            subs:[]
+          }
         else
-          prototype.description.target = [prototype.newTarget]
-        prototype.newTarget = ''
+          prototype.description.target = [
+            {
+              text:prototype.newTarget.text
+              subs:[]
+            }
+          ]
+        prototype.newTarget.text = ''
+
+    addSubTarget = (prototype,index) ->
+      if prototype.newTarget?.newSub[index]?.length >=1
+        if prototype.description.content
+          prototype.description.target[index].subs.push prototype.newTarget.newSub[index]
+        else
+          prototype.description.target[index].subs = [prototype.newContent.newSub[index]]
+        prototype.newTarget.newSub[index] = ''
 
     addContent = (prototype) ->
-      if prototype.newContent?.length >=1
+      if prototype.newContent?.text.length >=1
         if prototype.description.content
-          prototype.description.content.push(prototype.newContent)
+          prototype.description.content.push {
+            text:prototype.newContent.text
+            subs:[]
+          }
         else
-          prototype.description.content = [prototype.newContent]
-        prototype.newContent = ''
+          prototype.description.content = [
+            {
+              text:prototype.newContent.text
+              subs:[]
+            }
+          ]
+        prototype.newContent.text = ''
+
+    addSubContent = (prototype,index) ->
+      if prototype.newContent?.newSub[index]?.length >=1
+        if prototype.description.content
+          prototype.description.content[index].subs.push prototype.newContent.newSub[index]
+        else
+          prototype.description.content[index].subs = [prototype.newContent.newSub[index]]
+        prototype.newContent.newSub[index] = ''
 
     addScript = (prototype) ->
       if prototype.newScript?.length >=1
@@ -115,8 +147,14 @@ angular.module('modulmanager')
     removeTarget: (prototype,index) ->
       prototype.description.target.splice(index,1)
 
+    removeSubTarget: (prototype, parentIndex, index) ->
+      prototype.description.target[parentIndex].subs.splice(index,1)
+
     removeContent: (prototype,index) ->
       prototype.description.content.splice(index,1)
+
+    removeSubContent: (prototype, parentIndex, index) ->
+      prototype.description.content[parentIndex].subs.splice(index,1)
 
     removeScript: (prototype,index) ->
       prototype.scripts.splice(index,1)
@@ -124,7 +162,8 @@ angular.module('modulmanager')
     removeBook: (prototype,index) ->
       prototype.literature.splice(index,1)
 
-    checkSeparator: (prototype,e,type) ->
+    checkSeparator: (prototype,e,type,index) ->
+      if not index then index = 0
       separatorKeys = ['Enter']
       separatorKeyCodes = [44,13]
 
@@ -146,4 +185,6 @@ angular.module('modulmanager')
           when'content' then addContent(prototype)
           when'script' then addScript(prototype)
           when'book' then addBook(prototype)
+          when'subContent' then addSubContent(prototype,index)
+          when'subTarget' then addSubTarget(prototype,index)
           else console.log 'checkSeparator misuse! You mispelled the type or forgot to declare it'
