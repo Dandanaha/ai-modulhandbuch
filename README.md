@@ -70,7 +70,8 @@ Das ROTE KREUZ verwirft alle Änderungen und versetzt das Modul in seinen Urzust
 #### Bereitstellung
 
 Es wird sowohl der Quellcode der Website als auch eine fertig gebaute Version bereitgestellt. Die gebaute Version befindet sich in folgendem Ordner:
-    config/website/dist
+
+> config/website/dist
 
 Um die Website zu verwenden, kann sie entweder über die verwendete Buildumgebung gestartet (Erklärung weiter unten) oder auf einem beliebigen HTTP Server gehostet werden. Die Seite verfügt über keinerlei Nutzerverwaltung, weswegen auch die öffentliche Bereitstellung der Website keine Sicherheitsprobleme darstellt.
 

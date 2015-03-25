@@ -134,6 +134,7 @@
         <fo:page-number format="i"/>
        </fo:block>
       </fo:static-content>
+
       <fo:flow flow-name="xsl-region-body" >
         <fo:block font-size="16pt"
           font-family="Liberation Sans"
@@ -324,7 +325,7 @@
             CP: Credit Points im ECTS (European Credit Transfer System) ≙ Leistungspunkte
           </fo:block>
           <fo:block text-align="center">
-            <fo:external-graphic src="url(img/modules-simple.png)" content-height="160mm" content-width="190mm">
+            <fo:external-graphic src="url(img/modules-simple.PNG)" content-height="160mm" content-width="190mm">
                   </fo:external-graphic>
           </fo:block>
           <fo:block font-family="Arial">
@@ -333,7 +334,7 @@
 
           <!-- Page 2 -->
           <fo:block text-align="center" page-break-before="always">
-            <fo:external-graphic src="url(img/modules-detailed.png)" content-width="185mm">
+            <fo:external-graphic src="url(img/modules-detailed.PNG)" content-width="185mm">
             </fo:external-graphic>
           </fo:block>
 
@@ -345,9 +346,27 @@
           <fo:block font-family="Arial" page-break-before="always">
             Im Bereich der Qualifikations-Schwerpunkte müssen die Studierenden 6 Module (30 CP) aus den (derzeit 9-10) Modulen des jeweiligen Bereichs auswählen. Am Ende des Studiums müssen die Studierenden nachweisen, dass sie mindestens 6 Module eines bestimmten Qualifikationsschwerpunktes erfolgreich absolviert haben; dieser Qualifikationsschwerpunkt wird dann im Zeugnis genannt.
           </fo:block>
-          <fo:block font-family="Arial">
+          <fo:block font-family="Arial" margin-top="5pt">
             Das Angebot der wählbaren Module pro Schwerpunkt kann sich in Abhängigkeit von Nachfrage und vorhandenen Ressourcen ändern, solange dadurch die Möglichkeit des Abschlusses eines angestrebten Schwerpunkts für die Studierenden bestehen bleibt.
-          </fo:block>          
+          </fo:block>
+          <fo:block font-family="Arial" margin-top="10pt" margin-bottom="5pt" font-size="18pt">
+            Qualifikations-Schwerpunkte (wählbar):
+          </fo:block>
+          <fo:block text-align="center">
+            <fo:external-graphic src="url(img/majors.PNG)" content-height="160mm" content-width="190mm">
+                  </fo:external-graphic>
+          </fo:block>
+          <fo:block font-family="Arial" margin-top="10pt" margin-bottom="5pt" font-size="18pt">
+            Beispiele für Wahlmodule:
+          </fo:block>
+          <fo:block text-align="center">
+            <fo:external-graphic src="url(img/electives.png)" content-height="160mm" content-width="190mm">
+            </fo:external-graphic>
+          </fo:block>
+          <fo:block font-family="Arial" margin-top="5pt">
+            Im Bereich der Wahlmodule müssen Module im Umfang von 20 CP gewählt werden. Hierfür können neben den als Wahlmodule ausgewiesenen Modulen auch Module aus dem Bereich der Qualifikationsschwerpunkte verwendet werden, wenn sie nicht schon für den Nachweis des gewählten Qualifikationsschwerpunkts benötigt werden. 
+          </fo:block>
+               
           <!-- End of Preamble -->
 
         <!-- Actual module pages -->
