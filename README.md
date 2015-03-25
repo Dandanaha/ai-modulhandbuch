@@ -68,17 +68,21 @@ Die Website ist mithilfe zahlreicher Buildtools realisiert, die sich mit bower (
 Nachdem Node.js auf der Maschine installiert ist, die den Buildprozess ausführen soll, sind müssen u.U. zunächst bower und dann die bereits festgelegten Abhängigkeiten installiert werden.
 
 Installiere Bower
+
     npm install bower
 
 Installiere fehlende npm Pakete (definiert in package.json)
+
     npm install
 
 Installiere fehlende bower Pakete (definiert in bower.json, benötigt git)
+
     bower install
 
 Nachdem alle Abhängigkeiten installiert sind, kann entweder der Bauvorgang ausgelöst oder eine lokale Serverinstanz gestartet werden, auf der die Website laufen kann.
 
 Auslösen des Bauvorgangs
+
     gulp clean
     gulp build
 
