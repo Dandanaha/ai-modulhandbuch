@@ -67,6 +67,17 @@ Das ROTE KREUZ verwirft alle Änderungen und versetzt das Modul in seinen Urzust
 
 ## Technisches
 ### Website
+#### Daten
+
+Die aus dem Editor exportierte XML-Datei muss nach src/hs-data.xml
+verschoben werden. Nach git commit und git push wird das Modulhandbuch
+auf Jenkins automatisch erzeugt und auf den Webserver transferiert.
+
+Das Ergebnis ist dann z.B. per wget abholbar (analog zur App):
+
+    wget http://ai.it.hs-worms.de/mm/mm.xml
+    wget http://ai.it.hs-worms.de/mm/modulhandbuch-aninf.pdf
+
 #### Bereitstellung
 
 Es wird sowohl der Quellcode der Website als auch eine fertig gebaute Version bereitgestellt. Die gebaute Version befindet sich in folgendem Ordner:
