@@ -78,11 +78,25 @@ Um die Website zu verwenden, kann sie entweder über die verwendete Buildumgebun
 #### Bauen des Quellcodes
 Die Website ist mithilfe zahlreicher Buildtools realisiert, die sich mit bower (http://http://bower.io/) und dem Node Package Manager (https://www.npmjs.com/) installieren lassen. Für letzteres wird Node.js (https://nodejs.org/) benötigt.
 
+Unter Ubuntu Linux:
+
+    apt-get install npm
+    ln -s /usr/bin/nodejs /usr/local/bin/node
+
 Nachdem Node.js auf der Maschine installiert ist, die den Buildprozess ausführen soll, müssen u.U. zunächst bower und dann die bereits festgelegten Abhängigkeiten installiert werden.
 
 Installiere Bower
 
-    npm install bower
+    npm install --global bower
+
+Installiere gulp
+
+    npm install --global gulp
+    npm install --save-dev gulp
+
+Installiere sass
+
+    apt-get install ruby-sass
 
 Installiere fehlende npm Pakete (definiert in package.json)
 
