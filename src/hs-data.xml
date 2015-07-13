@@ -1,8 +1,8 @@
 <xml version='1.0' encoding='UTF-8'>
  <info>
   <created>02-23-2015;11:36:00</created>
-  <changed>07-10-2015;03:50:09</changed>
-  <revision>7</revision>
+  <changed>07-13-2015;04:59:36</changed>
+  <revision>8</revision>
   <owner>admin via web interface</owner>
  </info>
  <modules>
@@ -1632,6 +1632,35 @@
      <workload></workload>
      <sws>4</sws>
      <extype>paper</extype>
+     <weight>Entsprechend der ECTS-Punkte</weight>
+     <description>
+      <target>TODO</target>
+      <content>TODO</content>
+     </description>
+     <methods></methods>
+     <special></special>
+     <scripts>TODO</scripts>
+     <literature>TODO</literature>
+    </module>
+    <module code='4.82'>
+     <name>
+      <abbr>PDA</abbr>
+      <title>PDA-Programmierung</title>
+      <code>4.82</code>
+     </name>
+     <sem>5</sem>
+     <type>elective</type>
+     <qsp></qsp>
+     <offered-semesters>15w</offered-semesters>
+     <requirements></requirements>
+     <other-majors></other-majors>
+     <professor>Prof. Dr. Zimmermann</professor>
+     <responsible>Prof. Dr. Zimmermann</responsible>
+     <lang>Deutsch</lang>
+     <pts>5</pts>
+     <workload></workload>
+     <sws></sws>
+     <extype>practical</extype>
      <weight>Entsprechend der ECTS-Punkte</weight>
      <description>
       <target>TODO</target>
