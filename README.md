@@ -66,6 +66,15 @@ Das ROTE KREUZ verwirft alle Änderungen und versetzt das Modul in seinen Urzust
 
 
 ## Technisches
+### PDF-Generierung
+
+Das Modulhandbuch wird über einen Jenkins-Job generiert (siehe unten).
+Zum Testen, ob die Generierung funktioniert, kann dies auch lokal auf
+einem Linux-Rechner durchgeführt werden:
+
+    cd src
+    ./run-fop
+
 ### Website
 #### Daten
 

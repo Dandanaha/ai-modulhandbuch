@@ -1,0 +1,3 @@
+#!/bin/sh
+
+fop -xml hs-data.xml -xsl hs-data.xsl -pdf ../modulhandbuch-aninf.pdf -c fop-linux.xconf
