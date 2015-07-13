@@ -102,7 +102,11 @@
         <fo:block font-size="8pt"
           line-height="15pt"
           margin-left="10pt">
-          Stand: <xsl:value-of select="substring(changed,4,2)"/>.<xsl:value-of select="substring(changed,1,2)"/>.<xsl:value-of select="substring(changed,7,4)"/>
+	  Stand: <xsl:value-of
+		  select="substring(changed,4,2)"/>.<xsl:value-of
+		  select="substring(changed,1,2)"/>.<xsl:value-of
+		  select="substring(changed,7,4)"/>
+	  (Rev. <xsl:value-of select="revision"/>)
         </fo:block>
         <fo:block text-align="center"
           font-size="48pt"
@@ -128,7 +132,12 @@
       <!-- Footer -->
       <fo:static-content flow-name="xsl-region-after" font-size="8pt" font-family="Arial" >
        <fo:block text-align-last="justify">
-        Fassung vom <xsl:value-of select="substring(../info/changed,4,2)"/>.<xsl:value-of select="substring(../info/changed,1,2)"/>.<xsl:value-of select="substring(../info/changed,7,4)"/>, <xsl:value-of select="substring(../info/changed,12,8)"/>
+        Fassung vom <xsl:value-of
+		select="substring(../info/changed,4,2)"/>.<xsl:value-of
+		select="substring(../info/changed,1,2)"/>.<xsl:value-of
+		select="substring(../info/changed,7,4)"/>, <xsl:value-of
+		select="substring(../info/changed,12,8)"/>
+	(Rev. <xsl:value-of select="../info/revision"/>)
         <fo:leader leader-pattern="space" />
         <fo:leader leader-pattern="space" />
         <fo:page-number format="i"/>
@@ -217,9 +226,15 @@
       </fo:static-content>
 
       <!-- Footer -->
+      <!-- TODO: Kopie von Footer weiter oben; zusammenfuehren? -->
       <fo:static-content flow-name="xsl-region-after" font-size="8pt" font-family="Arial">
        <fo:block text-align-last="justify">
-        Fassung vom <xsl:value-of select="substring(../info/changed,4,2)"/>.<xsl:value-of select="substring(../info/changed,1,2)"/>.<xsl:value-of select="substring(../info/changed,7,4)"/>, <xsl:value-of select="substring(../info/changed,12,8)"/>
+	Fassung vom <xsl:value-of
+		select="substring(../info/changed,4,2)"/>.<xsl:value-of
+		select="substring(../info/changed,1,2)"/>.<xsl:value-of
+		select="substring(../info/changed,7,4)"/>, <xsl:value-of
+		select="substring(../info/changed,12,8)"/>
+	(Rev. <xsl:value-of select="../info/revision"/>)
         <fo:leader leader-pattern="space" />
         Seite <fo:page-number/> / <fo:page-number-citation-last ref-id="module-pages"/>
        </fo:block>
